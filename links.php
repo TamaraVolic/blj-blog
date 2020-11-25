@@ -1,38 +1,67 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Links</title>
-    <link rel="stylesheet" href="links.css">
+    <title>Home</title>
+    <link rel="stylesheet" href="home.css">
 
-</head>
-  <body>
-      <header class="container">
-        <a href="home.php"><img src="img/yourbloglogo.PNG" alt="blog logo"></a>
-      </header>
-      
-      <?php
-      include 'navi.php';
-      ?>
-      
-      <main>
-        <a href="">Alejandro</a></br>
-        <a href="">Corinne</a></br>
-        <a href="">Damiano</a></br>
-        <a href="">Dawid</a></br>
-        <a href="">Dominic</a></br>
-        <a href="">Gian</a></br>
-        <a href="">Janik</a></br>
-        <a href="">Kris</a></br>
-        <a href="">Leonie</a></br>
-        <a href="">Lian</a></br>
-        <a href="">Natascha</a></br>
-        <a href="">Noah</a></br>
-        <a href="">Rouven</a></br>
-        <a href="">Silas</a>
-      </main>
+    </head>
+	<body>
+		<div id="page">
+			<header id="header">
+				<div id="header-inner">	
+					<div id="logo">
+						<img src="img/BlogLogo.PNG" alt="Logo">
+					</div>
+					<div id="top-nav">
+          <?php
+            include 'navi.php';
+          ?>
+					</div>
+					<div class="clr"></div>
+				</div>
+			</header>
+			<div class="feature">
+				<div class="feature-inner">
+				<h1>Weitere Blogs:<h1>
+				</div>
+			</div>
+		
+	
+			<div id="content">
+				<div id="content-inner">
+				
+					<main id="contentbar">
+						<div class="article">
 
-
-  </body>
+						</div>
+					</main>
+					
+					<div class="clr"></div>
+				</div>
+			</div>
+		
+			<div id="footerblurb">
+				<div id="footerblurb-inner">
+				
+					<div class="column">
+          <h2>Kontakt</h2>
+            <p>E-mail: besipiel@beispiel.ch</p>
+            <p>Telefonnummer: 000 111 22 33</p>
+					</div>	
+					
+					<div class="clr"></div>
+				</div>
+			</div>
+			<footer id="footer">
+				<div id="footer-inner">
+        <p>BLJ-Projekt 2020 PHP</p>
+					<div class="clr"></div>
+				</div>
+			</footer>
+		</div>
+	</body>
 </html>
+
