@@ -1,5 +1,6 @@
 <?php
-    try{
+    $errors = [];
+    
     $user = 'root';
     $password = '';
 
@@ -7,26 +8,24 @@
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
     ]);
+
+    //If (($_GET['action'] ?? '')==='all'){
+        //$query = 'select * from posts order by created_at desc';
+    //}
+    $query = 'select * from posts limit 3';
+
+    $stmt = $pdo -> query($query);
+    $rows = $stmt -> fetchAll();
+
+    //var_dump ($posts);
+
+    foreach($rows as $rows) {
+        echo $rows ["created_by"]. ', Post: ' . $rows["post_text"] .'<br>';
     }
 
-    catch (PDOExpection $e) {
-        die('Keine Verbindung zur Datenbank möglich:' . $e -> getMessage());
-    }
-
-    $query = 'select * from post limit 3';
-
-    If (($_GET['action'] ?? '')==='all'){
-        $query = 'select * from posts order by created_at desc';
-    }
-
-    $stmt = $pdo->query($query);
-    $post = $stmt -> fetchAll();
-
-    // var_dump ($posts);
-
-    foreach ($posts as $post){
-        echo $post["created_by"] . ', Post:' . $post["post_text"] . '<br>';
-    }
+    $name    = $_POST['name']    ?? '';
+    $contribution   = $_POST['contribution']   ?? '';
+    $date    = date ('d.m.y H:i:s');
 
 ?>
 
@@ -36,7 +35,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Blog</title>
     <link rel="stylesheet" href="home.css">
 
     </head>
@@ -65,25 +64,52 @@
 			<div id="content">
 				<div id="content-inner">
 				
-					<main id="contentbar">
-						<div class="article">
+				<main id="contentbar">
+					<div class="article">
+                    <?php if(count($errors) > 0) : ?>
+                    <div class="error-box">
+                        <ul>
+                            <?php foreach ($errors as $error) : ?>
+                            <li><?= $error ?></li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
+                    <form action="blog.php" method="post">
+                    <legend class="form-legend">Ihr Beitrag:<br><br></legend>
+                        <div class="form-group">
+                            <label class="form-label" for="name">Ihr Name<br></label>
+                            <input class="form-control" type="text" id="name" name="name" value="<?= $name?>">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contribution" class="contribution">Ihr Blogbeitrag:<br></label>
+                            <textarea name="contribution" id="contribution" rows="5" class="contribution"><?= $contribution?></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <input class="btn btn-primary" type="submit" value="Beitrag posten">
+                            <a href="blog.php" class="btn">Beitrag abbrechen</a>
+                         </div>
                         
-                        <?php
-                        echo '<dl>';
-                            if (count($errors)>0){
-                                for($i = 0; $i<count($errors); $i++){
-                                echo "<li class= 'error-box'>$errors[$i]</li>";
-                                }
-                            }
-                            echo '/<dl>';
+
+                    <?php
+                        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        }
+                        if (empty($name)) {
+                            $errors[] = 'Bitte geben Sie einen Namen ein.';
+                        }
+                        if (empty($contribution)) {
+                        $errors[] = 'Bitte geben Sie einen Text ein.';
+                        }
                         ?>
-						</div>
-					</main>
+                                    
+					</div>
+				</main>
 					
 					
-					<div class="clr"></div>
-				</div>
-			</div>
+				<div class="clr"></div>
+				</div></div>
 		
 			<div id="footerblurb">
 				<div id="footerblurb-inner">
@@ -100,8 +126,8 @@
 			<footer id="footer">
 				<div id="footer-inner">
                 <p>BLJ-Projekt 2020 PHP</p>
-					<div class="clr"></div>
-				</div>
+				<div class="clr"></div>
+			</div>
 			</footer>
 		</div>
 	</body>
