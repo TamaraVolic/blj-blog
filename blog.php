@@ -1,35 +1,32 @@
 <?php
-    $errors = [];
-    
-    $user = 'root';
-    $password = '';
+                        $errors = [];
+                        
+                        $user = 'root';
+                        $password = '';
 
-    $pdo = new PDO('mysql:host=localhost;dbname=blog1', 'root', '', [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-    ]);
+                        $pdo = new PDO('mysql:host=localhost;dbname=blog1', 'root', '', [
+                            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+                        ]);
 
-    //If (($_GET['action'] ?? '')==='all'){
-        //$query = 'select * from posts order by created_at desc';
-    //}
-    $query = 'select * from posts limit 3';
+                        //If (($_GET['action'] ?? '')==='all'){
+                            //$query = 'select * from posts order by created_at desc';
+                        //}
+                        $query = 'select * from posts limit 3';
 
-    $stmt = $pdo -> query($query);
-    $rows = $stmt -> fetchAll();
+                        $stmt = $pdo -> query($query);
+                        $rows = $stmt -> fetchAll();
 
-    //var_dump ($posts);
+                        //var_dump ($posts);
 
-    foreach($rows as $rows) {
-        echo $rows ["created_by"]. ', Post: ' . $rows["post_text"] .'<br>';
-    }
+                        
 
-    $name    = $_POST['name']    ?? '';
-    $contribution   = $_POST['contribution']   ?? '';
-    $date    = date ('d.m.y H:i:s');
-
-?>
-
-
+                        $name    = $_POST['name']    ?? '';
+                        $title = $_POST['title'] ?? '';
+                        $contribution   = $_POST['contribution']   ?? '';
+                        $url = $_POST['url'] ?? '';
+                        $date    = date ('d.m.y H:i:s');
+                    ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,14 +34,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog</title>
     <link rel="stylesheet" href="home.css">
-
+    
     </head>
 	<body>
 		<div id="page">
 			<header id="header">
 				<div id="header-inner">	
 					<div id="logo">
-						<img src="img/BlogLogo.PNG" alt="Logo">
+					   <img src="img/BlogLogo.PNG" alt="Logo">
 					</div>
 					<div id="top-nav">
                     <?php
@@ -83,9 +80,20 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="title" class="title">Ihr Title:<br></label>
+                            <input class="form-control" type="title" id="title" name="title" value="<?= $title?>">
+                        </div>
+
+                        <div class="form-group">
                             <label for="contribution" class="contribution">Ihr Blogbeitrag:<br></label>
                             <textarea name="contribution" id="contribution" rows="5" class="contribution"><?= $contribution?></textarea>
                         </div>
+
+                        <div class="form-group">
+                            <label for="url" class="url">URL hinzufügen:<br></label>
+                            <input class="form-control" type="url" id="url" name="url" value="<?= $url?>">
+                        </div>
+
 
                         <div class="form-actions">
                             <input class="btn btn-primary" type="submit" value="Beitrag posten">
@@ -95,6 +103,9 @@
 
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                            $preparedStmt = $pdo->prepare("INSERT INTO `posts` (created_by, post_title, post_text, image_url) VALUES (?, ?, ?, ?)");
+                            $preparedStmt->execute([$name, $title, $contribution, $url]);
+                            /* echo "$count Datensätze wurden eingefügt."; */
                         }
                         if (empty($name)) {
                             $errors[] = 'Bitte geben Sie einen Namen ein.';
@@ -103,8 +114,14 @@
                         $errors[] = 'Bitte geben Sie einen Text ein.';
                         }
                         ?>
-                                    
-					</div>
+                    </div>
+                    
+                
+                    <?php 
+                    foreach($rows as $rows) {
+                        echo $rows ["created_by"]. ', Post: ' . $rows["post_text"] .'<br>';
+                    }
+                    ?>
 				</main>
 					
 					
@@ -115,7 +132,7 @@
 				<div id="footerblurb-inner">
 				
 					<div class="column">
-                        <h2>Kontakt</h2>
+                    <h2>Kontakt</h2>
                         <p>E-mail: besipiel@beispiel.ch</p>
                         <p>Telefonnummer: 000 111 22 33</p>
 					</div>		

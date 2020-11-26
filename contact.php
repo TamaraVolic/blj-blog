@@ -13,7 +13,7 @@
 			<header id="header">
 				<div id="header-inner">	
 					<div id="logo">
-						<img src="img/BlogLogo.PNG" alt="Logo">
+					<img src="img/BlogLogo.PNG" alt="Logo">
 					</div>
 					<div id="top-nav">
                     <?php
