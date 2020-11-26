@@ -35,7 +35,11 @@
 				
 					<main id="contentbar">
 						<div class="article">
-							<p>jskfdasdfkjl</p>
+							<h3>Wie Kontaktieren Sie uns?</h3>
+							<p>E-mail: besipiel@beispiel.ch</p>
+							<p>Telefonnummer: 000 111 22 33</p>
+							<p>Bei weiteren Fragen wenden Sie sich beim Geschäftsleiter Roland Heini </p>
+							<p>Roland Heini Tel: 888 99 00 00
 						</div>
 					</main>
 					
@@ -43,11 +47,7 @@
 						<div class="widget">
 							<h3>Weitere Infos:</h3>
 							<ul>
-							<li><a href="#">Link 1</a></li>
-							<li><a href="#">Link 2</a></li>
-							<li><a href="#">Link 3</a></li>
-							<li><a href="#">Link 4</a></li>
-							<li><a href="#">Link 5</a></li>
+                            <li>Weitere Infos zum Basislehrjahr findet ihr<a href="http://www.041er-blj.ch/"> HIER</a></li>
 							</ul>
 						</div>
 					</nav>

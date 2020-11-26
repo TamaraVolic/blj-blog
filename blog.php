@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD']=== 'POST'){
         array_push($errors, "The title is invalid");
     }
     if ($content === ''){
-        array_push($errors, "content is invalid");
+        array_push($errors, "Content is invalid");
     }
     if ($createdat === ''){
         array_push($errors, "Date is invalid");
