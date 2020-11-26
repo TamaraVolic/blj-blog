@@ -1,44 +1,31 @@
 <?php
-$user = 'root';
-$password = '';
+    try{
+    $user = 'root';
+    $password = '';
 
-$pdo = new PDO('mysql:host=localhost;dbname=blog', 'root', '', [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-]);
-
-$errors = [];
-$formSent= false;
-
-$title =$_POST['title']?? '';
-$content =$_POST['content']?? '';
-$creatdat =$_POST['creatdat']?? '';
-$creatby =$_POST['username']?? '';
-
-if ($_SERVER['REQUEST_METHOD']=== 'POST'){
-
-    $title = trim($title);
-    $content = trim($content);
-
-    if ($title === ''){
-        array_push($errors, "The title is invalid");
-    }
-    if ($content === ''){
-        array_push($errors, "Content is invalid");
-    }
-    if ($createdat === ''){
-        array_push($errors, "Date is invalid");
-    }
-    if ($createdby === ''){
-        array_push($errors, "Author is invalid");
+    $pdo = new PDO('mysql:host=localhost;dbname=blog1', 'root', '', [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+    ]);
     }
 
-    if (count($errors)=== 0){
-        $dbconnection = new PDO('mysql:host=localhost;dbname=blog', $user, $password);
-        $stmt =$dbconnection->prepare("INSERT INTO blog(created_by, created_at, post_title, post_text) VALUES (:created_by, now(), :post_text)");
-        $stmt->execute(["created_by"=> "$createdby", ":post_title" => "$createdby", ":post_title" => "$title",":post_text" => "$content"]);
+    catch (PDOExpection $e) {
+        die('Keine Verbindung zur Datenbank möglich:' . $e -> getMessage());
+    }
 
+    $query = 'select * from post limit 3';
 
+    If (($_GET['action'] ?? '')==='all'){
+        $query = 'select * from posts order by created_at desc';
+    }
+
+    $stmt = $pdo->query($query);
+    $post = $stmt -> fetchAll();
+
+    // var_dump ($posts);
+
+    foreach ($posts as $post){
+        echo $post["created_by"] . ', Post:' . $post["post_text"] . '<br>';
     }
 
 ?>
@@ -80,17 +67,7 @@ if ($_SERVER['REQUEST_METHOD']=== 'POST'){
 				
 					<main id="contentbar">
 						<div class="article">
-                        <form action ="blog.php" methode="post" class="formular">
-                            <label for="title"></label><br>
-                            <input type="text" id="title" name ="title" placeholder ="Title:" require>
-                            <label for="username"></label>
-                            <input type="text" id="username" name ="username" placeholder ="Created by:" require>
-                            <label for="createdat"></label>
-                            <input type="datetime local" id="creatdat" name ="creatdat" placeholder ="Created at:" require>
-                            <label for="content" class="contentinput"></label><br>
-                            <textarea id="content" name="content" rows="30" cols="163" placeholder ="Content:" require></textarea><br>
-                            <button type="submit" value="submit">Submit</button>
-                        </form>
+                        
                         <?php
                         echo '<dl>';
                             if (count($errors)>0){
@@ -112,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD']=== 'POST'){
 				<div id="footerblurb-inner">
 				
 					<div class="column">
-                    <h2>Kontakt</h2>
+                        <h2>Kontakt</h2>
                         <p>E-mail: besipiel@beispiel.ch</p>
                         <p>Telefonnummer: 000 111 22 33</p>
 					</div>		
