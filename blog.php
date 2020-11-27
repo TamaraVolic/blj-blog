@@ -1,18 +1,43 @@
 <?php
                         $errors = [];
+                        $name = '';
+                        $contribution = '';
+                        $date = '';
+                        $title ='';
                         
-                        $user = 'root';
-                        $password = '';
+                        $user = 'd041e_tavolic';
+                        $password = '12345_Db!!!';
 
-                        $pdo = new PDO('mysql:host=localhost;dbname=blog1', 'root', '', [
+                        $pdo = new PDO('mysql:host=localhost;dbname=d041e_tavolic', 'root', '', [
                             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
                         ]);
 
+                        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                            $preparedStmt = $pdo->prepare("INSERT INTO `posts` (created_by, post_title, post_text, image_url) VALUES (?, ?, ?, ?)");
+                            $preparedStmt->execute([$name, $title, $contribution, $url]);
+                            /* echo "$count Datensätze wurden eingefügt."; */
+                        }
+                        if (empty($name)) {
+                            $errors[] = 'Bitte geben Sie einen Namen ein.';
+                        }
+                        if (empty($contribution)) {
+                        $errors[] = 'Bitte geben Sie einen Text ein.';
+                        }
+                        if (empty($title)) {
+                            $errors[] = 'Bitte geben Sie einen Titel ein.';
+                        }
+                        
+                        if (count($errors) == 0) {
+                            $stmt = $pdo->prepare("INSERT INTO posts (created_at, created_by, post_title, post_text) VALUES(:post_date, :creator, :title, :post)");
+                            $stmt->execute([':post_date' => $date ,':creator' => $name,':title' => $title, ':post' => $contribution]);
+                        }
+                        
+
                         //If (($_GET['action'] ?? '')==='all'){
                             //$query = 'select * from posts order by created_at desc';
                         //}
-                        $query = 'select * from posts limit 3';
+                        $query = 'select * from posts order by created_at desc';
 
                         $stmt = $pdo -> query($query);
                         $rows = $stmt -> fetchAll();
@@ -56,6 +81,7 @@
 				<h1>Blog erfassen:</h1>
 				</div>
 			</div>
+        
 		
 	
 			<div id="content">
@@ -101,25 +127,14 @@
                          </div>
                         
 
-                    <?php
-                        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                            $preparedStmt = $pdo->prepare("INSERT INTO `posts` (created_by, post_title, post_text, image_url) VALUES (?, ?, ?, ?)");
-                            $preparedStmt->execute([$name, $title, $contribution, $url]);
-                            /* echo "$count Datensätze wurden eingefügt."; */
-                        }
-                        if (empty($name)) {
-                            $errors[] = 'Bitte geben Sie einen Namen ein.';
-                        }
-                        if (empty($contribution)) {
-                        $errors[] = 'Bitte geben Sie einen Text ein.';
-                        }
-                        ?>
+                    
+                        
                     </div>
                     
                 
                     <?php 
                     foreach($rows as $rows) {
-                        echo $rows ["created_by"]. ', Post: ' . $rows["post_text"] .'<br>';
+                        echo $rows ["created_by"] .': ' . $rows ["created_at"] .'<br>' . 'Titel: ' . $rows["post_title"] . '<br>' . 'Post: ' .  $rows["post_text"] .'<br>';
                     }
                     ?>
 				</main>
